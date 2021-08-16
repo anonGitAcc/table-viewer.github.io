@@ -5,7 +5,10 @@
         </title>
     </head>
     <body>
-        <div id ="buttonDiv">
+        <div id="prologue">
+            Please wait a few seconds, we are loading tables....
+        </div>
+        <div id ="buttonDiv" style="display: none;">
             <button id="prevButton" onclick="prevButtonClicked()" disabled >Previous</button>
             <button id="nextButton" onclick="nextButtonClicked()">Next</button>
         </div>
@@ -48,6 +51,11 @@
                     var type = request.getResponseHeader('Content-Type');
                     if (type.indexOf("text") !== 1) {
                         var csv_contents = request.responseText;
+                        
+                        // hide prologue
+                        document.getElementById("prologue").style.display = "none";
+                        document.getElementById("buttonDiv").style.display = "block";
+                        
                         csv_contents = csv_contents.split("|T_SEP|");
                         console.log(csv_contents.length);
                         var num_tables = csv_contents.length;
