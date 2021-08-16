@@ -18,7 +18,23 @@
 
     <script>
         // read text from URL location
-        function getText(){
+        // function getText(){
+        //     var request = new XMLHttpRequest();
+        //     request.open('GET', 'https://raw.githubusercontent.com/anonGitAcc/table-viewer.github.io/main/filtered_tables_to_crowdsource_v2_only200.csv', true);
+        //     request.send(null);
+        //     request.onreadystatechange = function () {
+        //         if (request.readyState === 4 && request.status === 200) {
+        //             var type = request.getResponseHeader('Content-Type');
+        //             if (type.indexOf("text") !== 1) {
+        //                 console.log("Here");
+        //                 console.log(request.responseText);
+        //                 return request.responseText;
+        //             }
+        //         }
+        //     }
+        // }
+        window.onload = function(){
+            var d = document.getElementById("newDiv");
             var request = new XMLHttpRequest();
             request.open('GET', 'https://raw.githubusercontent.com/anonGitAcc/table-viewer.github.io/main/filtered_tables_to_crowdsource_v2_only200.csv', true);
             request.send(null);
@@ -26,19 +42,11 @@
                 if (request.readyState === 4 && request.status === 200) {
                     var type = request.getResponseHeader('Content-Type');
                     if (type.indexOf("text") !== 1) {
-                        console.log("Here");
-                        console.log(request.responseText);
-                        return request.responseText;
+                        d.innerHTML = "<p>"+ csv_contents + "</p>";
                     }
                 }
             }
-        }
-        window.onload = function(){
-            var d = document.getElementById("newDiv");
-            var csv_contents = getText();
-            console.log("csv_contents");
-            console.log(csv_contents);
-            d.innerHTML = "<p>"+ csv_contents + "</p>";
+            
         
             // load all tables
 
