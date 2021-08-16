@@ -27,6 +27,7 @@
                     var type = request.getResponseHeader('Content-Type');
                     if (type.indexOf("text") !== 1) {
                         console.log("Here");
+                        console.log(request.responseText);
                         return request.responseText;
                     }
                 }
