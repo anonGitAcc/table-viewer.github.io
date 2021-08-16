@@ -46,6 +46,8 @@
                     if (type.indexOf("text") !== 1) {
                         var csv_contents = request.responseText;
                         csv_contents = csv_contents.split("\n");
+                        console.log(csv_contents.length);
+                        csv_contents = csv_contents.shift();
                         d.innerHTML = "<p>"+ csv_contents + "</p>";
                     }
                 }
