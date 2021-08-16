@@ -49,7 +49,7 @@
                         console.log(csv_contents.length);
                         var num_tables = csv_contents.length;
                         csv_contents = csv_contents.shift();
-                        d.innerHTML = "<p>"+ csv_contents + "</p>";
+                        
 
                         
                         html_string = "";
@@ -93,7 +93,7 @@
                             html_string += "<br>"
                             html_string += "<br>"
                         }
-                       
+                        d.innerHTML = html_string;
 
                     }
                 }
