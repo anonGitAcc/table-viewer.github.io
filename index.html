@@ -7,12 +7,37 @@
     <body>
         <p>ABC</p>
         <div id="newDiv"></div>
+        
+        <div id = "tableDiv">
 
+        </div>
+        <div>
+            <button>Previous</button>
+            <button>Next</button>
+        </div>
 
     <script>
+        // read text from URL location
+        function getText(){
+            var request = new XMLHttpRequest();
+            request.open('GET', 'http://www.xxxxx.com/pocket.txt', true);
+            request.send(null);
+            request.onreadystatechange = function () {
+                if (request.readyState === 4 && request.status === 200) {
+                    var type = request.getResponseHeader('Content-Type');
+                    if (type.indexOf("text") !== 1) {
+                        return request.responseText;
+                    }
+                }
+            }
+        }
         window.onload = function(){
             var d = document.getElementById("newDiv");
             d.innerHTML = "<p>DEF</p>";
+        
+            // load all tables
+
+        
         }
     </script>
     </body>
