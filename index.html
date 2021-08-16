@@ -33,8 +33,8 @@
         //         if (request.readyState === 4 && request.status === 200) {
         //             var type = request.getResponseHeader('Content-Type');
         //             if (type.indexOf("text") !== 1) {
-        //                 console.log("Here");
-        //                 console.log(request.responseText);
+        //                 // console.log("Here");
+        //                 // console.log(request.responseText);
         //                 return request.responseText;
         //             }
         //         }
@@ -57,10 +57,10 @@
                         document.getElementById("buttonDiv").style.display = "block";
                         
                         csv_contents = csv_contents.split("|T_SEP|");
-                        console.log(csv_contents.length);
+                        // console.log(csv_contents.length);
                         var num_tables = csv_contents.length;
                         
-                        console.log(csv_contents);
+                        // // console.log(csv_contents);
 
                         
                         html_string = "";
@@ -74,14 +74,14 @@
                             html_string += "<p>Table Number"+ (i+1).toString() + "</p>";
                             html_string += "<table class='wikitable'>"
                             table_data_string = csv_contents[i];
-                            console.log("table_data_string = ");
-                            console.log(table_data_string);
+                            // console.log("table_data_string = ");
+                            // console.log(table_data_string);
                             table_data_string = table_data_string.split("|RSEP|")
                             num_rows = table_data_string.length;
                             for (var row=0; row<num_rows;row++){
                                 row_data = table_data_string[row];
-                                console.log("row_data = ");
-                                console.log(row_data);
+                                // console.log("row_data = ");
+                                // console.log(row_data);
                                 row_data = row_data.split("|CSEP|")
                                 html_string += "<tr>"
                                 num_cols = row_data.length;
@@ -93,10 +93,10 @@
                                         cell_type = "td"
                                     }
                                     cell_data = row_data[col]
-                                    console.log("cell_type = ");
-                                    console.log(cell_type);
-                                    console.log("cell_data = ");
-                                    console.log(cell_data);
+                                    // console.log("cell_type = ");
+                                    // console.log(cell_type);
+                                    // console.log("cell_data = ");
+                                    // console.log(cell_data);
                                     html_string += "<" + cell_type + ">"
                                     html_string += cell_data
                                     html_string += "</" + cell_type + ">"
@@ -109,8 +109,8 @@
                             html_string += "</table>"
                             html_string += "</div>"
                         }
-                        console.log("html_string = ");
-                        console.log(html_string);
+                        // console.log("html_string = ");
+                        // console.log(html_string);
                         d.innerHTML = html_string;
 
                     }
