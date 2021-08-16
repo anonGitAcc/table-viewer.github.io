@@ -5,16 +5,19 @@
         </title>
     </head>
     <body>
-        <p>ABC</p>
-        <div id="newDiv"></div>
-        
+        <div id ="buttonDiv">
+            <button id="prevButton" onclick="prevButtonClicked()" disabled >Previous</button>
+            <button id="nextButton" onclick="nextButtonClicked()">Next</button>
+        </div>
+        <br>
+        <br>
+        <div id="currentTableNumShownDiv" style="display:none;">
+            0
+        </div>
         <div id = "tableDiv">
 
         </div>
-        <div>
-            <button>Previous</button>
-            <button>Next</button>
-        </div>
+        
     
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
     <script type="text/javascript">
@@ -36,7 +39,7 @@
         // }
 
         window.onload = function(){
-            var d = document.getElementById("newDiv");
+            var d = document.getElementById("tableDiv");
             var request = new XMLHttpRequest();
             request.open('GET', 'https://raw.githubusercontent.com/anonGitAcc/table-viewer.github.io/main/filtered_tables_to_crowdsource_v2_only_200_single_line.txt', true);
             request.send(null);
@@ -60,7 +63,7 @@
                                 display_status = "block";
                             }
                             html_string += "<div id='table_id_"+ i.toString() + "' style='display:" + display_status + "'>";
-                            html_string += "<p>Table</p>";
+                            html_string += "<p>Table Number"+ (i+1).toString() + "</p>";
                             html_string += "<table class='wikitable'>"
                             table_data_string = csv_contents[i];
                             console.log("table_data_string = ");
@@ -97,8 +100,6 @@
                                 
                             html_string += "</table>"
                             html_string += "</div>"
-                            html_string += "<br>"
-                            html_string += "<br>"
                         }
                         console.log("html_string = ");
                         console.log(html_string);
@@ -108,12 +109,50 @@
                 }
             }
             
-        
-            // load all tables
-
-        
         }
 
+        function prevButtonClicked(){
+            var currentTableNumShown = document.getElementById("currentTableNumShownDiv").innerHTML;
+            currentTableNumShown = parseInt(currentTableNumShown);
+            
+            // hide current table and show prev one
+            var currentTableDiv = document.getElementById("table_id_" + currentTableNumShown.toString());
+            var toShowTableNum = currentTableNumShown  - 1;
+            var toShowTableDiv = document.getElementById("table_id_" + toShowTableNum.toString());
+            currentTableDiv.style.display = "none";
+            toShowTableDiv.style.display = "block";
+
+            document.getElementById("currentTableNumShownDiv").innerHTML = toShowTableNum;
+            if (toShowTableNum == 0){
+                document.getElementById("prevButton").disabled = true;    
+            }
+            else{
+                document.getElementById("prevButton").disabled = false;
+                document.getElementById("nextButton").disabled = false;
+            }
+            
+        }
+
+        function nextButtonClicked(){
+            var currentTableNumShown = document.getElementById("currentTableNumShownDiv").innerHTML;
+            currentTableNumShown = parseInt(currentTableNumShown);
+            
+            // hide current table and show next one
+            var currentTableDiv = document.getElementById("table_id_" + currentTableNumShown.toString());
+            var toShowTableNum = currentTableNumShown  + 1;
+            var toShowTableDiv = document.getElementById("table_id_" + toShowTableNum.toString());
+            currentTableDiv.style.display = "none";
+            toShowTableDiv.style.display = "block";
+
+            document.getElementById("currentTableNumShownDiv").innerHTML = toShowTableNum;
+            if (toShowTableNum == 199){
+                document.getElementById("nextButton").disabled = true;    
+            }
+            else{
+                document.getElementById("prevButton").disabled = false;
+                document.getElementById("nextButton").disabled = false;
+            }
+        }
     </script>
     </body>
 </html>
