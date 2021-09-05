@@ -1,0 +1,193 @@
+<html>
+ <head>
+  <title>
+   Wikipedia table viewer
+  </title>
+ </head>
+ <body>
+  <div id="prologue">
+   Please wait a few seconds, we are loading tables....
+  </div>
+  <div id="batchNumDiv" style="display: none;">
+   41
+  </div>
+  <div id="buttonDiv" style="display: none;">
+   <button disabled="" id="prevButton" onclick="prevButtonClicked()">
+    Previous
+   </button>
+   <button id="nextButton" onclick="nextButtonClicked()">
+    Next
+   </button>
+  </div>
+  <br/>
+  <br/>
+  <div id="currentTableNumShownDiv" style="display:none;">
+   0
+  </div>
+  <div id="tableDiv">
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript">
+  </script>
+  <script type="text/javascript">
+   // read text from URL location
+        // function getText(){
+        //     var request = new XMLHttpRequest();
+        //     request.open('GET', 'https://raw.githubusercontent.com/anonGitAcc/table-viewer.github.io/main/filtered_tables_to_crowdsource_v2_only200.csv', true);
+        //     request.send(null);
+        //     request.onreadystatechange = function () {
+        //         if (request.readyState === 4 && request.status === 200) {
+        //             var type = request.getResponseHeader('Content-Type');
+        //             if (type.indexOf("text") !== 1) {
+        //                 // console.log("Here");
+        //                 // console.log(request.responseText);
+        //                 return request.responseText;
+        //             }
+        //         }
+        //     }
+        // }
+
+        window.onload = function(){
+            var d = document.getElementById("tableDiv");
+            var request = new XMLHttpRequest();
+            var batchNum = parseInt(document.getElementById("batchNumDiv").innerHTML);
+            var tableBatchURL = 'https://raw.githubusercontent.com/anonGitAcc/table-viewer.github.io/main/all_annotation_table_batches/filtered_tables_to_crowdsource_v2_batch' + batchNum.toString() + '_single_line.txt'
+            request.open('GET', tableBatchURL, true);
+            request.send(null);
+            request.onreadystatechange = function () {
+                if (request.readyState === 4 && request.status === 200) {
+                    var type = request.getResponseHeader('Content-Type');
+                    if (type.indexOf("text") !== 1) {
+                        var csv_contents = request.responseText;
+                        
+                        // hide prologue
+                        document.getElementById("prologue").style.display = "none";
+                        document.getElementById("buttonDiv").style.display = "block";
+                        
+                        csv_contents = csv_contents.split("|T_SEP|");
+                        // console.log(csv_contents.length);
+                        var num_tables = csv_contents.length;
+                        
+                        // // console.log(csv_contents);
+
+                        
+                        html_string = "";
+                        var i = 0;
+                        for(i=0;i < num_tables; i++){
+                            var display_status = "none";
+                            if (i == 0  ){
+                                display_status = "block";
+                            }
+                            html_string += "<div id='table_id_"+ i.toString() + "' style='display:" + display_status + "'>";
+                            html_string += "<p>Table Number: "+ (i+1).toString() + "</p>";
+                            html_string += "<table class='wikitable'>"
+                            table_data_string = csv_contents[i];
+                            // console.log("table_data_string = ");
+                            // console.log(table_data_string);
+                            table_data_string = table_data_string.split("|RSEP|")
+                            num_rows = table_data_string.length;
+                            for (var row=0; row<num_rows;row++){
+                                row_data = table_data_string[row];
+                                // console.log("row_data = ");
+                                // console.log(row_data);
+                                row_data = row_data.split("|CSEP|")
+                                html_string += "<tr>"
+                                num_cols = row_data.length;
+                                for (var col=0; col<num_cols;col++){
+                                    if (row == 0){
+                                        cell_type = "th"
+                                    }
+                                    else{
+                                        cell_type = "td"
+                                    }
+                                    cell_data = row_data[col]
+                                    // console.log("cell_type = ");
+                                    // console.log(cell_type);
+                                    // console.log("cell_data = ");
+                                    // console.log(cell_data);
+                                    html_string += "<" + cell_type + ">"
+                                    html_string += cell_data
+                                    html_string += "</" + cell_type + ">"
+                                
+                                }
+                                html_string += "</tr>"
+                                
+                            }
+                                
+                            html_string += "</table>"
+                            html_string += "</div>"
+                        }
+                        // console.log("html_string = ");
+                        // console.log(html_string);
+                        d.innerHTML = html_string;
+
+                    }
+                }
+            }
+            
+        }
+
+        function prevButtonClicked(){
+            var currentTableNumShown = document.getElementById("currentTableNumShownDiv").innerHTML;
+            currentTableNumShown = parseInt(currentTableNumShown);
+            
+            // hide current table and show prev one
+            var currentTableDiv = document.getElementById("table_id_" + currentTableNumShown.toString());
+            var toShowTableNum = currentTableNumShown  - 1;
+            var toShowTableDiv = document.getElementById("table_id_" + toShowTableNum.toString());
+            currentTableDiv.style.display = "none";
+            toShowTableDiv.style.display = "block";
+
+            document.getElementById("currentTableNumShownDiv").innerHTML = toShowTableNum;
+            if (toShowTableNum == 0){
+                document.getElementById("prevButton").disabled = true;    
+            }
+            else{
+                document.getElementById("prevButton").disabled = false;
+                document.getElementById("nextButton").disabled = false;
+            }
+            
+        }
+
+        function nextButtonClicked(){
+            var currentTableNumShown = document.getElementById("currentTableNumShownDiv").innerHTML;
+            currentTableNumShown = parseInt(currentTableNumShown);
+            
+            // hide current table and show next one
+            var currentTableDiv = document.getElementById("table_id_" + currentTableNumShown.toString());
+            var toShowTableNum = currentTableNumShown  + 1;
+            var toShowTableDiv = document.getElementById("table_id_" + toShowTableNum.toString());
+            currentTableDiv.style.display = "none";
+            toShowTableDiv.style.display = "block";
+
+            document.getElementById("currentTableNumShownDiv").innerHTML = toShowTableNum;
+            if (toShowTableNum == 199){
+                document.getElementById("nextButton").disabled = true;    
+            }
+            else{
+                document.getElementById("prevButton").disabled = false;
+                document.getElementById("nextButton").disabled = false;
+            }
+        }
+  </script>
+ </body>
+</html>
+<style media="all" type="text/css">
+ @media all{
+        table, th {
+                    border: 1px solid black;
+                    padding: 5px;
+                    color: black;
+                    font-family: verdana;
+                    background-color:lightyellow;
+                    font-size: smaller;
+                }
+                td {
+                    border: 1px solid black;
+                    padding: 5px;
+                    color: black;
+                    font-family: verdana;
+                    font-size: smaller;
+                    background-color:#daf5ea;
+                }
+            }
+</style>
