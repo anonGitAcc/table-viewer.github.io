@@ -51,6 +51,7 @@
             var request = new XMLHttpRequest();
             var batchNum = parseInt(document.getElementById("batchNumDiv").innerHTML);
             var tableBatchURL = 'https://raw.githubusercontent.com/anonGitAcc/table-viewer.github.io/main/all_annotation_table_batches/filtered_tables_to_crowdsource_v2_batch' + batchNum.toString() + '_single_line.txt'
+            console.log(tableBatchURL);
             request.open('GET', tableBatchURL, true);
             request.send(null);
             request.onreadystatechange = function () {
